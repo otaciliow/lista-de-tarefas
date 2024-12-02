@@ -30,6 +30,11 @@
     padding: 5px 10px;
 }
 
+.tasks-counter {
+    color: #fff;
+    margin-top: 10px;
+}
+
 .tasks-wrapper {
     margin-top: 10px;
     list-style-type: none;
