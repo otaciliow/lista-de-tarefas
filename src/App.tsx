@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import "./App.css";
 
 import pencilIcon from './assets/pencil-square.svg';
 import trashIcon from './assets/trash.svg';
 
 export default function App() {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const firstRender = useRef(true);
 
   const [input, setInput] = useState("");
   const [tasks, setTasks] = useState<string[]>([])
@@ -21,6 +24,14 @@ export default function App() {
     }
    }, [])
 
+   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    localStorage.setItem("@app-lista", JSON.stringify(tasks));
+   }, [tasks]);
+
    function handleRegister() {
     if (!input) {
       alert('Você precisa digitar um nome para a tarefa!')
@@ -34,22 +45,23 @@ export default function App() {
 
     setTasks(tarefas => [...tarefas, input]);
     setInput("");
-    localStorage.setItem("@app-lista", JSON.stringify([...tasks, input]));
    }
 
    function handleDelete(item: string) {
     const activeTasks = tasks.filter(task => task !== item);
 
     setTasks(activeTasks);
-    localStorage.setItem("@app-lista", JSON.stringify(activeTasks));
    }
 
    function handleEdit(item: string) {
+     inputRef.current?.focus();
+
     setInput(item);
     setEditTask({
       enabled: true,
       task: item
     })
+
    }
 
    function handleSaveEdit() {
@@ -65,14 +77,13 @@ export default function App() {
     });
 
     setInput("");
-    localStorage.setItem("@app-lista", JSON.stringify(allTasks));
    }
 
   return (
     <main>
       <h1 className="title">Lista de tarefas</h1>
       <div className="input-wrapper">
-        <input type="text" placeholder="Digite o nome da tarefa" value={input} onChange={ (e) => setInput(e.target.value) } className="task-input" />
+        <input type="text" placeholder="Digite o nome da tarefa" value={input} onChange={ (e) => setInput(e.target.value) } className="task-input" ref={inputRef} />
         <button onClick={handleRegister} className="task-add-button">{editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}</button>
       </div>
 
