@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./App.css";
 
 import pencilIcon from './assets/pencil-square.svg';
@@ -13,6 +13,14 @@ export default function App() {
     task: ''
    });
 
+   useEffect(() => {
+    const savedTasks = localStorage.getItem("@app-lista");
+
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+   }, [])
+
    function handleRegister() {
     if (!input) {
       alert('Você precisa digitar um nome para a tarefa!')
@@ -26,12 +34,14 @@ export default function App() {
 
     setTasks(tarefas => [...tarefas, input]);
     setInput("");
+    localStorage.setItem("@app-lista", JSON.stringify([...tasks, input]));
    }
 
    function handleDelete(item: string) {
     const activeTasks = tasks.filter(task => task !== item);
 
     setTasks(activeTasks);
+    localStorage.setItem("@app-lista", JSON.stringify(activeTasks));
    }
 
    function handleEdit(item: string) {
@@ -55,6 +65,7 @@ export default function App() {
     });
 
     setInput("");
+    localStorage.setItem("@app-lista", JSON.stringify(allTasks));
    }
 
   return (
