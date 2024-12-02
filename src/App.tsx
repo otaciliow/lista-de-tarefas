@@ -1,6 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import "./App.min.css";
+
+import pencilIcon from './assets/pencil-square.svg';
+import trashIcon from './assets/trash.svg';
 
 export default function App() {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const firstRender = useRef(true);
 
   const [input, setInput] = useState("");
   const [tasks, setTasks] = useState<string[]>([])
@@ -8,6 +15,22 @@ export default function App() {
     enabled: false,
     task: ''
    });
+
+   useEffect(() => {
+    const savedTasks = localStorage.getItem("@app-lista");
+
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+   }, [])
+
+   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    localStorage.setItem("@app-lista", JSON.stringify(tasks));
+   }, [tasks]);
 
    function handleRegister() {
     if (!input) {
@@ -31,11 +54,14 @@ export default function App() {
    }
 
    function handleEdit(item: string) {
+     inputRef.current?.focus();
+
     setInput(item);
     setEditTask({
       enabled: true,
       task: item
     })
+
    }
 
    function handleSaveEdit() {
@@ -54,20 +80,25 @@ export default function App() {
    }
 
   return (
-    <div>
-      <h1>Lista de tarefas</h1>
-      <input type="text" placeholder="Digite o nome da tarefa" value={input} onChange={ (e) => setInput(e.target.value) } />
-      <button onClick={handleRegister}>{editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}</button>
-      <hr />
+    <main>
+      <h1 className="title">Lista de tarefas</h1>
+      <div className="input-wrapper">
+        <input type="text" placeholder="Digite o nome da tarefa" value={input} onChange={ (e) => setInput(e.target.value) } className="task-input" ref={inputRef} />
+        <button onClick={handleRegister} className="task-add-button">{editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}</button>
+      </div>
 
-    {tasks.map( (item, index) => (
-      <section key={index}>
-        <span>{item}</span>
-        <button onClick={() => handleEdit(item)}>Editar</button>
-        <button onClick={() => handleDelete(item)}>Excluir</button>
-      </section>
-    ) )}
+      <ul className="tasks-wrapper">
+        {tasks.map( (item, index) => (
+          <li key={index}>
+            <span>{item}</span>
+            <div className="buttons-wrapper">
+              <button onClick={() => handleEdit(item)} title="Editar tarefa"><img src={pencilIcon} alt="icone de lápis" /></button>
+              <button onClick={() => handleDelete(item)} title="Excluir tarefa"><img src={trashIcon} alt="icone de lixeira" /></button>
+            </div>
+          </li>
+        ) )}
+      </ul>
 
-    </div>
+    </main>
   )
 }
