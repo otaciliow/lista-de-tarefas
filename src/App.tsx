@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import "./App.css";
+import "./App.min.css";
 
 import pencilIcon from './assets/pencil-square.svg';
 import trashIcon from './assets/trash.svg';
