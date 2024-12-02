@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import "./App.min.css";
 
 import pencilIcon from './assets/pencil-square.svg';
@@ -79,6 +79,10 @@ export default function App() {
     setInput("");
    }
 
+  const totalTasks = useMemo(() => {
+    return tasks.length;
+  }, [tasks])
+
   return (
     <main>
       <h1 className="title">Lista de tarefas</h1>
@@ -86,6 +90,8 @@ export default function App() {
         <input type="text" placeholder="Digite o nome da tarefa" value={input} onChange={ (e) => setInput(e.target.value) } className="task-input" ref={inputRef} />
         <button onClick={handleRegister} className="task-add-button">{editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}</button>
       </div>
+
+      <p><strong>Você tem {totalTasks} tarefas:</strong></p>
 
       <ul className="tasks-wrapper">
         {tasks.map( (item, index) => (
