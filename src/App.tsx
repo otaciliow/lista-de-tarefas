@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import "./App.min.css";
 
 import pencilIcon from './assets/pencil-square.svg';
@@ -32,7 +32,7 @@ export default function App() {
     localStorage.setItem("@app-lista", JSON.stringify(tasks));
    }, [tasks]);
 
-   function handleRegister() {
+   const handleRegister = useCallback(() => {
     if (!input) {
       alert('Você precisa digitar um nome para a tarefa!')
       return;
@@ -45,7 +45,7 @@ export default function App() {
 
     setTasks(tarefas => [...tarefas, input]);
     setInput("");
-   }
+   }, [input, tasks])
 
    function handleDelete(item: string) {
     const activeTasks = tasks.filter(task => task !== item);
