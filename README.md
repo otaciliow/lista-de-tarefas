@@ -1,6 +1,6 @@
 # Projeto React com Vite
 
-Este é um projeto simples utilizando React e Vite, uma ferramenta de build rápida e moderna para desenvolvimento front-end. Sua finalidade é fazer uma comparação dos preços do álcool e da gasolina e então dizer qual deles compensa mais, se baseando nos valores informados pelo usuário.
+Este é um projeto simples utilizando React e Vite, uma ferramenta de build rápida e moderna para desenvolvimento front-end. Sua finalidade é criar uma lista de tarefas, alem de permitir ao usuário excluir ou editar as mesmas.
 
 ### Projeto com caráter educativo, para aprimorar meus conhecimentos em React, Vite e Typescript
 
