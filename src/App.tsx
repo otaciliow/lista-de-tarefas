@@ -91,7 +91,7 @@ export default function App() {
         <button onClick={handleRegister} className="task-add-button">{editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}</button>
       </div>
 
-      <p className="tasks-counter"><strong>{totalTasks > 0 ? `Você tem ${totalTasks} tarefas:` : "Você ainda não tem tarefas!"}</strong></p>
+      {totalTasks > 0 && <p className="tasks-counter"><strong>Você tem {totalTasks} tarefas:</strong></p>}
 
       <ul className="tasks-wrapper">
         {tasks.map( (item, index) => (
